@@ -32,7 +32,7 @@ flowchart TB
 |---|---|
 | WireGuard on the router instead of a reverse proxy | Smaller attack surface; no public web dashboard to harden; native OPNsense support with per-peer config |
 | Static IP from ISP | Stable endpoint for WireGuard peers and the Jellyfin port forward; no DDNS moving parts |
-| qBittorrent routed through a dedicated VPN tunnel | Download traffic is segmented off the home IP and bound to the VPN interface |
+| qBittorrent via SOCKS5 proxy | Download traffic is proxied through the VPN provider; if the proxy is unreachable, transfers fail closed instead of leaking onto the home IP |
 | Single Jellyfin port forward | Pragmatic sharing for a handful of friends; one TCP port, not a whole dashboard |
 | eero + Archer A6 both in bridge mode | OPNsense stays the single router/DHCP server; APs are just radios, no double NAT |
 | Guest SSID for smart-home gear | Google Home and bulbs isolated from the main WLAN at the Wi-Fi layer |
@@ -56,4 +56,3 @@ TODO: add stories as they happen. Candidates:
 ## Future improvements
 
 - [ ] VLANs: separate IoT / guest / trusted LAN at the switch level instead of just Wi-Fi SSIDs
-- [ ] Verify qBittorrent is bound to the VPN interface (kill-switch: downloads halt instead of leaking onto the home IP if the tunnel drops)

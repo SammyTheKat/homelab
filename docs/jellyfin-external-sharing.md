@@ -7,7 +7,8 @@ Friends wanted access to the Jellyfin library without installing VPN clients or 
 ## Design
 
 - Paid static IP from the ISP → single OPNsense port forward → Jellyfin.
-- Each friend gets their own Jellyfin account (TODO: confirm per-user libraries / restrictions).
+- Each friend gets their own Jellyfin account, created manually — no open registration.
+- Passwords are set by the admin and handed over **in person** (out-of-band credential delivery; nothing sensitive ever crosses email or chat).
 - Admin keeps full LAN access over WireGuard instead of the public port.
 
 ## Trade-offs
@@ -27,5 +28,4 @@ TODO: real examples, e.g.:
 ## TODO
 
 - External port intentionally omitted from this repo — no reason to publish it
-- [ ] Confirm Jellyfin requires login (no anonymous access)
 - [ ] Consider noting OPNsense IDS/IPS or rate limiting on that rule
