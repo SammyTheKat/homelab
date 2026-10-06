@@ -18,7 +18,7 @@ flowchart TB
     Switch --> TrueNAS["TrueNAS SCALE<br/>192.168.4.122"]
     Switch --> PS5["PS5<br/>(Cat6 attic run)"]
     Switch --> Archer["TP-Link Archer A6<br/>(bridge, 2.4 GHz)"]
-    Archer --> Wyze["Wyze camera receiver"]
+    Archer --> Wyze["Security camera receiver"]
     OPNsense --> WG["WireGuard"]
     WG --> Phone["Phone"]
     WG --> Laptop["Laptop"]
