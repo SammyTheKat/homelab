@@ -37,6 +37,7 @@ flowchart TB
 | eero + Archer A6 both in bridge mode | OPNsense stays the single router/DHCP server; APs are just radios, no double NAT |
 | Guest SSID for smart-home gear | Google Home and bulbs isolated from the main WLAN at the Wi-Fi layer |
 | Flat network, no VLANs (yet) | Simplicity won; segmentation is a known future improvement |
+| OPNsense admin never on WAN | Admin UI is reachable only from the LAN or over WireGuard |
 
 ## The M.2 NIC mod
 
@@ -55,6 +56,4 @@ TODO: add stories as they happen. Candidates:
 ## Future improvements
 
 - [ ] VLANs: separate IoT / guest / trusted LAN at the switch level instead of just Wi-Fi SSIDs
-- [ ] Confirm qBittorrent VPN binding / kill-switch behavior
-- [ ] Confirm OPNsense admin UI is not exposed to WAN
-- [ ] Confirm Jellyfin requires login for all users
+- [ ] Verify qBittorrent is bound to the VPN interface (kill-switch: downloads halt instead of leaking onto the home IP if the tunnel drops)

@@ -7,6 +7,14 @@
 
 Honest assessment: the manual HDD backups work, but they're not automated, not versioned, and not tested on a schedule. That's the gap this project closes.
 
+## Why this project exists: the Pool2 scare
+
+A drive in Pool2 (Storage — photos, documents, programs, game backups, the ROM collection) started throwing bad sectors, and TrueNAS alerted on it. That kicked off an immediate backup scramble. In the end only a single ROM was lost, and it was recovered onto a new drive. The failing drive was labeled BAD and retired to a shelf so it could never accidentally end up back in a pool.
+
+The postmortem improvement: Scrutiny was installed for continuous drive-health monitoring, so the next failing drive gets caught by a dashboard instead of by panic.
+
+Lesson: the alert worked and the backup worked — but it was luck as much as planning. A scheduled, automated replica removes the luck.
+
 ## The plan: second TrueNAS replication target
 
 A spare PC and extra drives are available. The build:

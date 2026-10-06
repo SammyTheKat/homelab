@@ -26,6 +26,6 @@ TODO: real examples, e.g.:
 
 ## TODO
 
-- [ ] Confirm external port and whether it's non-standard
+- External port intentionally omitted from this repo — no reason to publish it
 - [ ] Confirm Jellyfin requires login (no anonymous access)
 - [ ] Consider noting OPNsense IDS/IPS or rate limiting on that rule

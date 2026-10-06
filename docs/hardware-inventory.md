@@ -36,8 +36,8 @@ All datasets unencrypted. Fast NVMe pools hold app data and working sets; spinni
 
 | Item | Detail |
 |---|---|
-| Device | Spare PC (TODO: specs) |
-| Drives | Extra drives on hand (TODO: count and sizes) |
+| Device | HP Pavilion 580-023W (spare desktop) |
+| Drives | 256 GB SSD (OS) + 1 TB HDD; one free SATA port available for expansion |
 | OS | TrueNAS (planned) |
 
 ## Cold backup
