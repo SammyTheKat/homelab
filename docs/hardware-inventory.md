@@ -18,7 +18,7 @@
 | Motherboard | Supermicro X13SAE-F, rev 1.02 |
 | CPU | 12th Gen Intel Core i7-12700K |
 | RAM | 63 GiB |
-| GPU | NVIDIA GTX 1060 6GB (transcoding) |
+| GPU | Intel UHD 770 integrated graphics (Quick Sync) handle Jellyfin transcoding — efficient for multiple simultaneous streams at low power draw. NVIDIA GTX 1060 6GB installed for local AI experiments (Open WebUI) |
 | LAN IP | 192.168.4.122 |
 
 ### Storage pools
