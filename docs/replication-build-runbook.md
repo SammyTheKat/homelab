@@ -6,6 +6,8 @@ Goal: second TrueNAS box replicating the primary's datasets on a schedule, with 
 
 ## Phase 1 — Build the replica
 
+- [ ] Check the ISO library first: `Pool2/Storage/Programs/ISO_Tools` — verify the TrueNAS ISO version matches the primary (25.04.2.6); re-flash if unsure
+- [ ] Flash to USB with Rufus (also in the ISO_Tools folder)
 - [ ] Install TrueNAS SCALE on the HP (match the primary's version, 25.04.2.6, or newer — ZFS replication wants the target at equal-or-newer feature flags)
 - [ ] Set hostname (e.g. `truenas-replica`) and a static IP (e.g. `192.168.4.123`)
 - [ ] Create a pool on the 1 TB HDD (single-disk stripe is fine for a replica target — it's a copy, not the primary)

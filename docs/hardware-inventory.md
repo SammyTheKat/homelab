@@ -76,4 +76,5 @@ Tripp Lite UPS protecting the OPNsense box, TrueNAS server, switch, and Wi-Fi ro
 ## Also in the lab
 
 - **3D printing**: OctoPrint + Manyfold + Spoolman (filament manager) in the app list; the M.2 NIC housing on the router was 3D printed
+- **ISO & tools library**: curated collection on Pool2 (`Storage/Programs/ISO_Tools`) — TrueNAS, Bazzite and Ubuntu builds, OPNsense image, Windows Server 2022, plus Advanced IP Scanner, Rufus, and Hiren's BootCD PE
 - **Previously experimented with**: FieldStation42 on a second OptiPlex 7050 (virtual TV station, since replaced by Tunarr)
