@@ -35,10 +35,10 @@ Lesson: snapshot tasks must target the same datasets the replication sources use
 
 Lesson: the snapshot naming schema on the replication task must match the periodic task's schema (`auto-%Y-%m-%d_%H-%M`). A leftover custom regex (`replica-seed`) caused the first run to match zero snapshots and "succeed" instantly with nothing transferred. Cleared the regex and linked both periodic tasks instead.
 
-## Phase 4 — Prove it works
+## Phase 4 — Prove it works ✅ (2026-10-06)
 
-- [ ] **Restore test:** on the replica, clone a snapshot and copy a file out of it. A backup you haven't restored is a rumor.
-- [ ] Record the date and result below
+- [x] **Restore test:** on the replica, cloned `replica/Pool2/Storage@auto-2026-10-06_10-45` to `replica/restore-test-2026-10-06`, recovered `Work/job.txt`, and `sha256sum` matched the primary's copy exactly (`71087593…b9a5517` both ends). Backup proven real, not a rumor. Clone destroyed after the test.
+- [x] Record the date and result below
 
 ## Phase 5 — Ongoing
 
@@ -49,7 +49,7 @@ Lesson: the snapshot naming schema on the replication task must match the period
 
 | Date | What happened |
 |---|---|
-| | |
+| 2026-10-06 | Pool1/Media (~1.97T) and Pool2/Storage (~960G) seeds completed to the 9020 replica. Restore test passed: cloned snapshot, recovered Work/job.txt, sha256sums matched primary. Phase 4 complete. |
 
 ## Notes / things that broke
 
