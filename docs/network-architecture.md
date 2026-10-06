@@ -41,7 +41,7 @@ flowchart TB
 
 ## The M.2 NIC mod
 
-The OptiPlex 7050 needed a second NIC for the router build. Instead of a USB adapter, an extra NIC was added through a **spare M.2 slot**, with a **3D-printed housing** designed to attach it to the case. Proper PCIe networking on a machine that was never meant to be a router.
+The OptiPlex 7050 needed a second NIC for the router build. Instead of a USB adapter, an extra NIC was added through a **spare M.2 slot**, with a **custom-designed 3D-printed housing** to mount it to the case — modeled and published here: [M.2 NIC mount on MakerWorld](https://makerworld.com/models/1879026?appSharePlatform=copy). Proper PCIe networking on a machine that was never meant to be a router.
 
 ## Power
 
