@@ -2,9 +2,29 @@
 
 ## Overview
 
-Single public static IP → OPNsense router (Dell OptiPlex small form factor) → home LAN.
+Fiber ONT → OPNsense on a Dell OptiPlex 7050 → eero (bridge mode) → unmanaged switch → everything else. Flat 192.168.4.0/24 network, no VLANs.
 
 Remote access is handled by **WireGuard running directly on OPNsense** — no publicly exposed reverse proxy, which keeps the attack surface to one UDP port. Friends access Jellyfin through a single OPNsense port forward.
+
+## Physical topology
+
+```mermaid
+flowchart TB
+    Fiber(["Fiber ISP<br/>(ONT, static IP)"]) --> OPNsense["OPNsense<br/>Dell OptiPlex 7050<br/>+ M.2 NIC mod"]
+    OPNsense --> Eero["eero SO10001<br/>(bridge mode, Wi-Fi 6E)"]
+    Eero -->|Guest SSID| IoT["Google Home<br/>smart bulbs"]
+    Eero --> Switch["Unmanaged switch"]
+    Switch --> GamingPC["Gaming PC"]
+    Switch --> TrueNAS["TrueNAS SCALE<br/>192.168.4.122"]
+    Switch --> PS5["PS5<br/>(Cat6 attic run)"]
+    Switch --> Archer["TP-Link Archer A6<br/>(bridge, 2.4 GHz)"]
+    Archer --> Wyze["Wyze camera receiver"]
+    OPNsense --> WG["WireGuard"]
+    WG --> Phone["Phone"]
+    WG --> Laptop["Laptop"]
+    WG --> Handhelds["Handheld gaming"]
+    OPNsense -->|Port forward| Friends["Friends<br/>(Jellyfin)"]
+```
 
 ## Design decisions
 
@@ -14,29 +34,27 @@ Remote access is handled by **WireGuard running directly on OPNsense** — no pu
 | Static IP from ISP | Stable endpoint for WireGuard peers and the Jellyfin port forward; no DDNS moving parts |
 | qBittorrent routed through TorGuard VPN | Torrent traffic never touches the home IP; ISP sees only encrypted VPN traffic |
 | Single Jellyfin port forward | Pragmatic sharing for a handful of friends; one TCP port, not a whole dashboard |
+| eero + Archer A6 both in bridge mode | OPNsense stays the single router/DHCP server; APs are just radios, no double NAT |
+| Guest SSID for smart-home gear | Google Home and bulbs isolated from the main WLAN at the Wi-Fi layer |
+| Flat network, no VLANs (yet) | Simplicity won; segmentation is a known future improvement |
 
-## Traffic flow
+## The M.2 NIC mod
 
-- **Road-warrior devices** (laptop, phone, handheld gaming systems): WireGuard tunnel into OPNsense → full LAN access, including TrueNAS apps and OPNsense admin.
-- **Friends**: `static-ip:8096` (TODO: confirm port) → OPNsense port forward → Jellyfin. No VPN client needed on their end.
-- **Torrents**: qBittorrent → TorGuard tunnel → internet. Bound to the VPN interface so a dropped tunnel kills traffic instead of leaking it (TODO: confirm kill-switch/binding config).
+The OptiPlex 7050 needed a second NIC for the router build. Instead of a USB adapter, an extra NIC was added through a **spare M.2 slot**, with a **3D-printed housing** designed to attach it to the case. Proper PCIe networking on a machine that was never meant to be a router.
+
+## Power
+
+Everything network-critical — OPNsense box, TrueNAS, switch, both Wi-Fi routers — sits on a Tripp Lite UPS.
 
 ## What broke / lessons learned
 
-TODO: add 2–3 real stories. Good candidates:
-- A WireGuard peer that wouldn't handshake (key mismatch? firewall rule order?)
+TODO: add stories as they happen. Candidates:
 - Jellyfin buffering for a remote friend (transcode settings? upload bandwidth cap?)
-- qBittorrent leaking or stalling when the VPN dropped
+- qBittorrent behavior when the TorGuard tunnel drops
 
-## Hardening notes
+## Future improvements
 
-- OPNsense admin UI is **not** exposed to WAN (TODO: confirm).
-- Jellyfin has authentication required for all users (TODO: confirm).
-- TODO: consider fail2ban or OPNsense intrusion detection for the forwarded port.
-
-## TODO
-
-- [ ] Fill in LAN subnet(s), VLANs if any
-- [ ] Confirm Jellyfin external port
-- [ ] Confirm qBittorrent VPN binding / kill switch behavior
-- [ ] Screenshot or export of OPNsense NAT/firewall rules (redacted)
+- [ ] VLANs: separate IoT / guest / trusted LAN at the switch level instead of just Wi-Fi SSIDs
+- [ ] Confirm qBittorrent VPN binding / kill-switch behavior
+- [ ] Confirm OPNsense admin UI is not exposed to WAN
+- [ ] Confirm Jellyfin requires login for all users

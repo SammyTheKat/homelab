@@ -58,4 +58,4 @@ Sanitized, secrets-stripped service configs live in [`configs/`](configs/). Anyt
 
 ---
 
-*TODO: fill in hardware specs, drive layout, and LAN subnets in `docs/hardware-inventory.md`.*
+*Hardware, network, and storage are documented. Remaining TODOs: spare-PC specs for the replication build, and more "what broke" war stories as they happen.*
