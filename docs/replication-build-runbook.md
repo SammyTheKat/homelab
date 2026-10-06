@@ -2,16 +2,19 @@
 
 Goal: second TrueNAS box replicating the primary's datasets on a schedule, with a tested restore.
 
-**Target hardware:** HP Pavilion 580-023W — 256 GB SSD (OS), 1 TB HDD + one free SATA port.
+**Target hardware:** Dell OptiPlex 9020 mini tower — chosen over the HP 580-023W (which turned up a bad DDR4 stick/slot during testing, and only has room for one HDD + boot drive).
+
+**Drives:** boot SSD + 2× 2 TB HDDs in a stripe (~3.6 TB usable). No mirror on the replica — the primary is the redundant copy; if a replica drive dies, re-replicate.
+
+**Capacity note:** primary holds ~2.9 TB today (Media 1.96 TiB + Storage ~0.94 TiB). It fits, with modest headroom. Priority order if space ever gets tight: `Pool2/Storage` first (irreplaceable: photos, documents, ROMs), `Pool1/Media` second (re-fetchable via the *arr pipeline).
 
 ## Phase 1 — Build the replica
 
 - [ ] Check the ISO library first: `Pool2/Storage/Programs/ISO_Tools` — verify the TrueNAS ISO version matches the primary (25.04.2.6); re-flash if unsure
 - [ ] Flash to USB with Rufus (also in the ISO_Tools folder)
-- [ ] Install TrueNAS SCALE on the HP (match the primary's version, 25.04.2.6, or newer — ZFS replication wants the target at equal-or-newer feature flags)
+- [ ] Install TrueNAS SCALE on the 9020 (match the primary's version, 25.04.2.6, or newer — ZFS replication wants the target at equal-or-newer feature flags)
 - [ ] Set hostname (e.g. `truenas-replica`) and a static IP (e.g. `192.168.4.123`)
-- [ ] Create a pool on the 1 TB HDD (single-disk stripe is fine for a replica target — it's a copy, not the primary)
-- [ ] If adding the extra HDD later: note the date it went in here
+- [ ] Create a pool on the 2× 2 TB HDDs (stripe is fine for a replica target — it's a copy, not the primary)
 
 ## Phase 2 — Snapshots on the primary
 

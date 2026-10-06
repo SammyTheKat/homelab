@@ -36,8 +36,8 @@ All datasets unencrypted. Fast NVMe pools hold app data and working sets; spinni
 
 | Item | Detail |
 |---|---|
-| Device | HP Pavilion 580-023W (spare desktop) |
-| Drives | 256 GB SSD (OS) + 1 TB HDD; one free SATA port available for expansion |
+| Device | Dell OptiPlex 9020 mini tower |
+| Drives | Boot SSD (TODO) + 2× 2 TB HDD (planned stripe) |
 | OS | TrueNAS (planned) |
 
 ## Cold backup
