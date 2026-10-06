@@ -54,6 +54,8 @@ The OptiPlex 7050 needed a second NIC for the router build. Instead of a USB ada
 | Streaming over the VPN tunnel instead of port forwarding | No exposed streaming ports; authentication and encryption come free with WireGuard |
 | WoL via OPNsense | The router is always on and already reachable remotely — the natural place to send the wake packet from |
 
+## Power
+
 Everything network-critical — OPNsense box, TrueNAS, switch, both Wi-Fi routers — sits on a Tripp Lite UPS.
 
 ## What broke / lessons learned
