@@ -16,7 +16,7 @@ flowchart TB
         OPNsense <--> TrueNAS["TrueNAS Server<br/>~20 containerized services"]
         OPNsense <--> WG["WireGuard VPN<br/>(on OPNsense)"]
         OPNsense <--> JF["Jellyfin<br/>(port-forwarded)"]
-        TrueNAS <--> qbit["qBittorrent<br/>→ TorGuard VPN"]
+        TrueNAS <--> qbit["qBittorrent<br/>→ VPN tunnel"]
     end
 
     WG <--> Phone["Phone (tunnel)"]
@@ -24,7 +24,7 @@ flowchart TB
     WG <--> Handhelds["Handheld gaming devices"]
 
     Internet <--> Friends["Friends<br/>(Jellyfin via port forward)"]
-    qbit <--> TorGuard(["TorGuard VPN"])
+    qbit <--> VPN(["Commercial VPN"])
 ```
 
 See [docs/network-architecture.md](docs/network-architecture.md) for the full breakdown.

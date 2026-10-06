@@ -10,7 +10,7 @@ Wanted a self-running media library: request → find → download → organize 
 flowchart LR
     Seerr["Seerr<br/>(requests)"] --> Sonarr["Sonarr / Radarr"]
     Sonarr --> Jackett["Jackett + FlareSolverr<br/>(indexers)"]
-    Jackett --> qbit["qBittorrent<br/>(via TorGuard VPN)"]
+    Jackett --> qbit["qBittorrent<br/>(via VPN tunnel)"]
     qbit --> Sonarr
     Sonarr --> Jellyfin["Jellyfin<br/>(serve)"]
     Jellyfin --> Jellystat["Jellystat<br/>(stats)"]
@@ -19,7 +19,7 @@ flowchart LR
 - **Seerr**: friends and family request movies/shows through a simple UI.
 - **Sonarr/Radarr**: track wanted content, talk to indexers, hand off to the downloader, then rename and file everything into the library.
 - **Jackett + FlareSolverr**: aggregate torrent indexers; FlareSolverr solves the Cloudflare challenges that would otherwise block indexer queries.
-- **qBittorrent**: downloads, bound to the TorGuard VPN interface.
+- **qBittorrent**: downloads, bound to the VPN tunnel interface.
 - **Jellyfin**: serves the finished library; **Jellystat** tracks watch stats; **Tunarr** builds live-TV channels from the library.
 
 Supporting cast: Jdownloader2 and PlexRipper for one-off grabs, MeTube for YouTube downloads, Audiobookshelf for audiobooks, RomM for retro games, Immich for photo backup.
@@ -43,7 +43,7 @@ Downloads land on fast storage, the *arr apps process and rename, and the finish
 |---|---|
 | Split download vs. serve | The *arr apps manage files; Jellyfin only reads the finished library — a failed download never corrupts what's being watched |
 | FlareSolverr alongside Jackett | Indexers behind Cloudflare silently fail without a solver; this was (TODO: confirm) the fix for mysteriously empty search results |
-| VPN-bound torrent client | Privacy and ISP-complaint avoidance; traffic dies instead of leaking if the tunnel drops |
+| VPN-bound download client | Download traffic segmented from the home network; traffic dies instead of leaking if the tunnel drops |
 
 ## What broke / lessons learned
 
