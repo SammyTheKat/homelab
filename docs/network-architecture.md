@@ -43,7 +43,16 @@ flowchart TB
 
 The OptiPlex 7050 needed a second NIC for the router build. Instead of a USB adapter, an extra NIC was added through a **spare M.2 slot**, with a **custom-designed 3D-printed housing** to mount it to the case — modeled and published here: [M.2 NIC mount on MakerWorld](https://makerworld.com/models/1879026?appSharePlatform=copy). Proper PCIe networking on a machine that was never meant to be a router.
 
-## Power
+## Game streaming over WireGuard
+
+- **Apollo** (a Sunshine fork) runs on the gaming PC; **Moonlight** runs on the WireGuard-connected devices (phone, handhelds, laptop).
+- Streams games remotely with **zero open ports** — all traffic rides the existing WireGuard tunnel.
+- The gaming PC has **Wake-on-LAN enabled**; the magic packet is sent from OPNsense itself, reached over the WireGuard connection. Full loop: connect VPN → wake PC → stream games, from anywhere.
+
+| Decision | Why |
+|---|---|
+| Streaming over the VPN tunnel instead of port forwarding | No exposed streaming ports; authentication and encryption come free with WireGuard |
+| WoL via OPNsense | The router is always on and already reachable remotely — the natural place to send the wake packet from |
 
 Everything network-critical — OPNsense box, TrueNAS, switch, both Wi-Fi routers — sits on a Tripp Lite UPS.
 
