@@ -27,7 +27,7 @@ A spare PC and extra drives are available. The build:
 
 ```mermaid
 flowchart LR
-    Primary["Primary TrueNAS<br/>(snapshots)"] -->|Replication task<br/>(scheduled, SSH)| Replica["Second TrueNAS<br/>(spare PC)"]
+    Primary["Primary TrueNAS<br/>(snapshots)"] -->|Replication task (scheduled, SSH)| Replica["Second TrueNAS<br/>(spare PC)"]
     Primary -.->|Manual, periodic| Cold["External HDDs<br/>(cold copy)"]
     Scrutiny["Scrutiny<br/>(drive health)"] -.-> Primary
 ```

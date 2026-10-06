@@ -63,7 +63,7 @@ All datasets unencrypted. Fast NVMe pools hold app data and working sets; spinni
 
 ### What's on the switch
 
-- Gaming PC
+- Daily-driver PC ("Aquarium", Hyte Y70 case): i9-14900KF, 32GB DDR5, RTX 4070 Ti SUPER 16GB, 1.86TB NVMe, Windows 11 Pro — accesses Pool1/Pool2 over SMB shares; runs Apollo for game streaming
 - TrueNAS SCALE machine
 - Cat6 run → living room (PS5)
 - TP-Link Archer A6 (bridge mode)
