@@ -30,8 +30,8 @@ Lesson: snapshot tasks must target the same datasets the replication sources use
 
 - [x] SSH connection `truenas-replica` → 192.168.4.123 (semi-automatic setup)
 - [x] Replication task `Pool1,Pool2 - replica`: PUSH over SSH+NETCAT, no transfer encryption (LAN), sources `Pool1/Media` + `Pool2/Storage` recursive, destination `replica` pool
-- [ ] First run completed (in progress as of 2026-10-06 ~10:50 CDT — ~2.9 TB initial seed)
-- [ ] Confirm the datasets + snapshots exist on the replica
+- [x] First run completed 2026-10-06 — ~2.9 TB initial seed landed clean
+- [x] Confirmed the datasets + snapshots on the replica (`replica/Pool1/Media` 1.97T, `replica/Pool2/Storage` 960G, seed snapshots `auto-2026-10-06_10-45` verified)
 
 Lesson: the snapshot naming schema on the replication task must match the periodic task's schema (`auto-%Y-%m-%d_%H-%M`). A leftover custom regex (`replica-seed`) caused the first run to match zero snapshots and "succeed" instantly with nothing transferred. Cleared the regex and linked both periodic tasks instead.
 
@@ -51,9 +51,3 @@ Lesson: the snapshot naming schema on the replication task must match the period
 |---|---|
 | 2026-10-06 | Pool1/Media (~1.97T) and Pool2/Storage (~960G) seeds completed to the 9020 replica. Restore test passed: cloned snapshot, recovered Work/job.txt, sha256sums matched primary. Phase 4 complete. |
 | 2026-10-07 | First scheduled overnight run succeeded — task finished against the auto-2026-10-07 snapshots. Snapshot → replicate loop now proven end-to-end on the schedule. |
-
-## Notes / things that broke
-
-| Date | Issue | Fix |
-|---|---|---|
-| | | |

@@ -33,13 +33,15 @@
 
 All datasets unencrypted. Fast NVMe pools hold app data and working sets; spinning disks hold the bulk media library.
 
-## Spare / replication target (planned)
+## Replication target
 
 | Item | Detail |
 |---|---|
 | Device | Dell OptiPlex 9020 mini tower |
 | Drives | 256GB boot SSD + 2× 2TB HDD in a stripe (~3.5TiB usable) |
-| OS | TrueNAS SCALE (replication target, built Oct 2026) |
+| OS | TrueNAS SCALE 25.04.2.6 (built Oct 2026) |
+| LAN IP | 192.168.4.123 |
+| Role | Snapshot replication target for the primary's datasets |
 
 ## Cold backup
 
@@ -47,25 +49,26 @@ All datasets unencrypted. Fast NVMe pools hold app data and working sets; spinni
 |---|---|
 | Media | 4× 1TB + 7× 500GB HDDs on hand for cold copies |
 | Contents | Main media collection |
-| Cadence | Manual |
+| Cadence | Quarterly (rsync incrementals after the first full copy; verified every refresh; stored disconnected) |
 
 ## Network
 
 | Item | Detail |
 |---|---|
-| WAN | Fiber (ONT) → OPNsense; paid static IP |
+| WAN | Fiber (ONT) → OPNsense; static IP from ISP |
 | LAN subnet | 192.168.4.0/24 (TrueNAS is .122) |
 | VLANs | None — flat network |
 | Wi-Fi (main) | eero SO10001 in bridge mode (Wi-Fi 6E); separate guest SSID for Google Home / smart bulbs |
 | Wi-Fi (legacy) | TP-Link Archer A6 in bridge mode, 2.4 GHz for older IoT devices; security camera wireless receiver hangs off it |
 | Switch | Generic unmanaged switch |
 | Wired runs | Cat6 drop through the attic to the living room (PS5) |
-| VPN | WireGuard on OPNsense; peers: laptop, phone, handheld gaming systems |
+| VPN | WireGuard on OPNsense; peers: laptop, phone, Android handhelds, tablet |
 
 ### What's on the switch
 
 - Daily-driver PC ("Aquarium", Hyte Y70 case): i9-14900KF, 32GB DDR5, RTX 4070 Ti SUPER 16GB, 1.86TB NVMe, Windows 11 Pro — accesses Pool1/Pool2 over SMB shares; runs Apollo for game streaming
-- TrueNAS SCALE machine
+- TrueNAS SCALE machine (primary, 192.168.4.122)
+- TrueNAS replica (Dell OptiPlex 9020, 192.168.4.123)
 - Cat6 run → living room (PS5)
 - TP-Link Archer A6 (bridge mode)
 - Previously: second OptiPlex 7050 running FieldStation42
@@ -78,4 +81,4 @@ Tripp Lite UPS protecting the OPNsense box, TrueNAS server, switch, and Wi-Fi ro
 
 - **3D printing**: OctoPrint + Manyfold + Spoolman (filament manager) in the app list; the M.2 NIC housing on the router was 3D printed
 - **ISO & tools library**: curated collection on Pool2 (`Storage/Programs/ISO_Tools`) — TrueNAS, Bazzite and Ubuntu builds, OPNsense image, Windows Server 2022, plus Advanced IP Scanner, Rufus, and Hiren's BootCD PE
-- **Previously experimented with**: FieldStation42 on a second OptiPlex 7050 (virtual TV station, since replaced by Tunarr)
+- **Previously experimented with**: FieldStation42 on a second OptiPlex 7050 (virtual TV station, since replaced by Tunarr); a Bazzite streaming box on a spare SFF OptiPlex for living-room game streaming from the Aquarium (short-lived experiment)
