@@ -20,12 +20,11 @@ Friends wanted access to the Jellyfin library without installing VPN clients or 
 
 ## What broke / lessons learned
 
-TODO: real examples, e.g.:
-- Remote transcode performance vs. home upload bandwidth
-- A friend's client that wouldn't direct-play
-- Any port-scan / unwanted-login-attempt observations
+**ErsatzTV melted the 9020.** On my second TrueNAS build (the OptiPlex 9020, now the replication target), I ran ErsatzTV in Docker to fake live TV channels and feed them into Jellyfin. One viewer: fine. The moment a second person tuned in, the box fell over — ErsatzTV stitches commercials into the stream, which forces a transcode per viewer, and the 9020's Quick Sync couldn't keep up with two of those at once. That was the moment I stopped trying to make the old hardware work and built the current server around the i7-12700K's UHD 770. Sometimes the fix is just more Quick Sync.
 
-## TODO
+**Friends and family are the real monitoring system.** Sharing Jellyfin with actual humans means being tech support: forgotten passwords and usernames get sorted out in person. Accounts are created by hand and credentials delivered face-to-face — no self-service signup, which is a security feature, not a limitation.
+
+## Notes
 
 - External port intentionally omitted from this repo — no reason to publish it
 - [ ] Consider noting OPNsense IDS/IPS or rate limiting on that rule
