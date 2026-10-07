@@ -1,6 +1,6 @@
 # Homelab
 
-Personal home infrastructure: network, storage, media automation, and remote access — documented as code.
+Personal home infrastructure: network, storage, media automation, and remote access — all written up.
 
 **Operator:** Pete
 **Status:** Actively maintained
@@ -14,6 +14,7 @@ flowchart TB
 
     subgraph LAN["Home LAN"]
         OPNsense <--> TrueNAS["TrueNAS Server<br/>~20 containerized services"]
+        TrueNAS <--> Replica["TrueNAS Replica<br/>192.168.4.123<br/>(snapshot target)"]
         OPNsense <--> WG["WireGuard VPN<br/>(on OPNsense)"]
         OPNsense <--> JF["Jellyfin<br/>(port-forwarded)"]
         TrueNAS <--> qbit["qBittorrent<br/>→ VPN tunnel"]
@@ -21,7 +22,8 @@ flowchart TB
 
     WG <--> Phone["Phone (tunnel)"]
     WG <--> Laptop["Laptop (tunnel)"]
-    WG <--> Handhelds["Handheld gaming devices"]
+    WG <--> Handhelds["Android handhelds"]
+    WG <--> Tablet["Tablet"]
 
     Internet <--> Friends["Friends<br/>(Jellyfin via port forward)"]
     qbit <--> VPN(["Commercial VPN"])

@@ -16,13 +16,15 @@ flowchart TB
     Eero --> Switch["Unmanaged switch"]
     Switch --> GamingPC["Gaming PC"]
     Switch --> TrueNAS["TrueNAS SCALE<br/>192.168.4.122"]
+    Switch --> Replica["TrueNAS Replica<br/>192.168.4.123"]
     Switch --> PS5["PS5<br/>(Cat6 attic run)"]
     Switch --> Archer["TP-Link Archer A6<br/>(bridge, 2.4 GHz)"]
     Archer --> CamHub["Security camera receiver"]
     OPNsense --> WG["WireGuard"]
     WG --> Phone["Phone"]
     WG --> Laptop["Laptop"]
-    WG --> Handhelds["Handheld gaming"]
+    WG --> Handhelds["Android handhelds"]
+    WG --> Tablet["Tablet"]
     OPNsense -->|Port forward| Friends["Friends<br/>(Jellyfin)"]
 ```
 
@@ -41,11 +43,11 @@ flowchart TB
 
 ## The M.2 NIC mod
 
-The OptiPlex 7050 needed a second NIC for the router build. Instead of a USB adapter, an extra NIC was added through a **spare M.2 slot**, with a **custom-designed 3D-printed housing** to mount it to the case — modeled and published here: [M.2 NIC mount on MakerWorld](https://makerworld.com/models/1879026?appSharePlatform=copy). Proper PCIe networking on a machine that was never meant to be a router.
+The OptiPlex 7050 needed a second NIC for the router build. Instead of a USB adapter, an extra NIC was added through a **spare M.2 slot**, with a **custom 3D-printed housing** to mount it to the case — modeled and published here: [M.2 NIC mount on MakerWorld](https://makerworld.com/models/1879026?appSharePlatform=copy). Proper PCIe networking on a machine that was never meant to be a router.
 
 ## Game streaming over WireGuard
 
-- **Apollo** (a Sunshine fork) runs on the gaming PC; **Moonlight** runs on the WireGuard-connected devices (phone, handhelds, laptop).
+- **Apollo** (a Sunshine fork) runs on the gaming PC; **Moonlight** runs on the WireGuard-connected devices (phone, Android handhelds, tablet, laptop).
 - Streams games remotely with **zero open ports** — all traffic rides the existing WireGuard tunnel.
 - The gaming PC has **Wake-on-LAN enabled**; the magic packet is sent from OPNsense itself, reached over the WireGuard connection. Full loop: connect VPN → wake PC → stream games, from anywhere.
 
@@ -60,7 +62,9 @@ Everything network-critical — OPNsense box, TrueNAS, switch, both Wi-Fi router
 
 ## What broke / lessons learned
 
-Nothing major on the network side yet — the war stories so far live in the [WireGuard doc](remote-access-wireguard.md). Candidates for future entries: Jellyfin buffering for a remote friend (transcode settings? upload bandwidth cap?), qBittorrent behavior when the VPN tunnel drops.
+**Replica invisible to WireGuard: the gateway that never took effect.** The new TrueNAS replica (`.123`) worked fine on the LAN and replication ran clean — but WireGuard clients couldn't reach it at all. `ip route` showed no default route: the gateway from the static-IP setup had never actually applied. Same-subnet traffic never needs a gateway, so nothing noticed until a cross-subnet client tried to connect. Fixed by setting the gateway (and DNS) properly in the TrueNAS UI — and now `ip route` is part of verifying any static config, not just the UI form. Full write-up in [war stories](war-stories.md).
+
+Other candidates for future entries: Jellyfin buffering for a remote friend (transcode settings? upload bandwidth cap?), qBittorrent behavior when the VPN tunnel drops.
 
 ## Future improvements
 
