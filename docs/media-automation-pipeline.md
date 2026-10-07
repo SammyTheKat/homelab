@@ -16,7 +16,7 @@ flowchart LR
     Jellyfin --> Jellystat["Jellystat<br/>(stats)"]
 ```
 
-- **Seerr**: friends and family request movies/shows through a simple UI.
+- **Seerr**: the request interface — mine, not public. When someone wants a specific title, I add it here myself. That keeps a close eye on what gets ingested: no surprise 80GB downloads sitting unwatched, and no open request system. LAN/VPN only, no open ports.
 - **Sonarr/Radarr**: track wanted content, talk to indexers, hand off to the downloader, then rename and file everything into the library.
 - **Jackett + FlareSolverr**: aggregate torrent indexers; FlareSolverr solves the Cloudflare challenges that would otherwise block indexer queries.
 - **qBittorrent**: downloads, routed through a SOCKS5 proxy — if the proxy is unreachable, transfers fail closed rather than leaking.
@@ -54,9 +54,3 @@ Downloads land on fast storage, the *arr apps process and rename, and the finish
 **250 GB of stale Docker images.** The apps NVMe pool started running low on space. Investigation showed over 250 GB of old, unused Docker images had accumulated from months of app updates. Ran an image prune from the TrueNAS shell — with the critical precaution of making sure every app was *running* first, so the prune couldn't delete the image behind a live container. Reclaimed the space with zero downtime. Lesson: container updates don't clean up after themselves; image hygiene is a recurring ops task, not a one-time fix.
 
 More stories will land here as they happen — FlareSolverr/Cloudflare fights, Jackett indexer outages, container-vs-dataset permission battles.
-
-## Still to document
-
-- [ ] Sanitized docker-compose / TrueNAS app configs → `configs/`
-- [ ] Dataset layout (where downloads land vs. where the library lives)
-- [ ] Note which services are exposed to friends vs. LAN-only

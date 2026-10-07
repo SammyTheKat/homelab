@@ -2,10 +2,12 @@
 
 ## Current state
 
-- Manual backups of the main media collection to external hard disks.
-- Scrutiny monitors drive health on the primary TrueNAS box (early warning for failing disks).
+- **Automated replica:** daily snapshots on the primary (`Pool1/Media` at midnight, `Pool2/Storage` at 1am, kept two weeks) replicate to a second TrueNAS box on the LAN. Restore-tested — cloned a snapshot on the replica, recovered a file, checksums matched the primary.
+- **Failure alerts:** email alerts on the primary cover replication failures plus drive errors, pool degradation, and scrub issues.
+- **Cold copy:** 4× 1TB + 7× 500GB HDDs on hand for the offline third copy, refreshed quarterly (rsync incrementals after the first full copy, verified every refresh, stored disconnected).
+- **Drive monitoring:** Scrutiny watches drive health on the primary for early warning.
 
-Honest assessment: the manual HDD backups work, but they're not automated, not versioned, and not tested on a schedule. That's the gap this project closes.
+That's 3-2-1: three copies, two media types (NAS + external HDD), one offline.
 
 ## Why this project exists: the Pool2 scare
 
@@ -23,11 +25,11 @@ Built October 2026 from a spare Dell OptiPlex 9020 mini tower:
 2. **Snapshot schedule on primary** — daily snapshots, kept 2 weeks: `Pool1/Media` at midnight, `Pool2/Storage` at 1am (naming `auto-%Y-%m-%d_%H-%M`).
 3. **Replication task** — TrueNAS → TrueNAS over the LAN via SSH+NETCAT, pushing both datasets to the `replica` pool on a schedule after the snapshots land.
 4. **Restore test** — cloned a snapshot on the replica, recovered a file, `sha256sum` matched the primary exactly. An untested backup is a rumor; this one isn't.
-5. **Cold HDD copy** — 4× 1TB + 7× 500GB drives on hand for the offline third copy (3-2-1: 3 copies, 2 media types, 1 offline). Refresh cadence TBD.
+5. **Cold HDD copy** — 4× 1TB + 7× 500GB drives on hand for the offline third copy (3-2-1: 3 copies, 2 media types, 1 offline). Refresh cadence: quarterly.
 
 ```mermaid
 flowchart LR
-    Primary["Primary TrueNAS<br/>(snapshots)"] -->|Scheduled replication over SSH| Replica["Second TrueNAS<br/>(spare PC)"]
+    Primary["Primary TrueNAS<br/>(snapshots)"] -->|Scheduled replication over SSH| Replica["Second TrueNAS<br/>192.168.4.123"]
     Primary -.->|Manual, periodic| Cold["External HDDs<br/>(cold copy)"]
     Scrutiny["Scrutiny<br/>(drive health)"] -.-> Primary
 ```
@@ -43,8 +45,4 @@ flowchart LR
 ## Build log
 
 - **2026-10-06**: assembled the 9020, created the `replica` pool, ran the seed (~2.9TB: 1.97T Media + ~960G Storage). Two setup gotchas worth remembering: Rufus ISO-mode boot failed (reflashed in DD mode), and the static IP needed an explicit netmask/gateway. Restore test passed same day — cloned snapshot, recovered `Work/job.txt`, checksums matched the primary. Details in the [replication runbook](replication-build-runbook.md).
-
-## Still to do
-
-- [ ] Decide cold-HDD refresh cadence
-- [ ] Set up failure alerts (email/Discord) for the replication task
+- **2026-10-07**: first scheduled overnight replication ran clean — snapshots fired on schedule and replication followed automatically, no manual steps. Email failure alerts configured and tested on the primary (Gmail SMTP, Warning level). Cold-HDD refresh cadence set to quarterly. The build is complete.
