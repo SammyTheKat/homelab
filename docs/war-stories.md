@@ -54,3 +54,65 @@ gateway dialog, and confirmed the 60-second test change at
 interface netmask before the gateway value — the error usually means the
 box can't see the gateway's subnet at all, which is a mask problem, not a
 gateway problem.
+
+---
+
+## 2026-10-07 — Replica box unreachable over WireGuard: the static gateway never took effect
+
+**Setup:** Dell OptiPlex 9020 replica node, TrueNAS SCALE 25.04.2.6, static
+`192.168.4.123/24`. Same-subnet replication from the primary (`.122` →
+`.123`) was working fine.
+
+**Symptom:** The replica was unreachable from WireGuard clients (phone,
+laptop) — no ping, no web UI — while every LAN device reached it without
+issue.
+
+**Root cause:** The box had no default route at all. `ip route` showed only
+the link route (`192.168.4.0/24 dev eno1 ... src 192.168.4.123`) — the
+`192.168.4.1` gateway from the previous day's static-IP config never
+actually took effect. LAN traffic never needs a gateway, and replication is
+`.122` → `.123` on the same subnet, so nothing noticed. WireGuard clients
+live on the tunnel subnet, so replies from `.123` had to be routed back
+through OPNsense — and with no default route, they went nowhere.
+
+**Fix:** Immediate test with `sudo ip route add default via 192.168.4.1`
+(WireGuard reachability confirmed instantly), then made permanent in the
+TrueNAS UI: **Network → Interfaces → edit eno1 → IPv4 Default Gateway →
+`192.168.4.1`**, plus the nameserver in **Network → Global Configuration →
+Nameservers → `192.168.4.1`** (OPNsense runs the LAN's DNS resolver). The
+CLI fix doesn't survive a reboot; the UI one does.
+
+**Lesson:** "Same subnet works, cross-subnet doesn't" is a gateway problem
+until proven otherwise. This one would also have silently broken
+replication failure alerts later — alert emails need the gateway to leave
+the box. Verify static network configs with `ip route`, not just the UI
+form.
+
+---
+
+## 2026-10-07 — Primary server exhaust fan dying: SYS_FAN2 low-RPM warnings in IPMI
+
+**Setup:** Primary TrueNAS box — Supermicro X13SAE-F, i7-12700K, TrueNAS
+SCALE 25.04.2.6. Headless, in a home office.
+
+**Symptom:** The IPMI event log showed SYS_FAN2 dipping to 280–420 RPM
+several times on Sept 29 (Lower Critical threshold 420, Lower
+Non-recoverable 280), recovering each time — plus a faint vibration from
+the chassis.
+
+**Root cause:** A dusty exhaust fan with a failing bearing. The IPMI events
+had been warning about it for over a week. Cleaning the chassis properly
+(stop apps, shut down from the UI, unplug the PSU, hold each fan still
+while blowing) cleared the dust, but the fan started vibrating afterward —
+a dying bearing doesn't get better with cleaning.
+
+**Fix:** Ordered an ARCTIC P12 Pro PST LN 120mm PWM as the replacement.
+Swap plan for when it arrives: stop apps and shut down from the UI, unplug,
+replace the fan on the SYS_FAN2 header (airflow arrow pointing out the rear
+— it's the exhaust), power on, verify pools ONLINE and apps started, then
+watch the IPMI event log for a week for any new SYS_FAN2 low-RPM events.
+
+**Lesson:** IPMI fan-threshold events are an early warning, not noise. A
+fan that repeatedly dips and recovers is telling you its bearing is going —
+clean first, but if the noise changes character after cleaning, order the
+replacement instead of hoping.

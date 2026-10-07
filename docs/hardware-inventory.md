@@ -17,6 +17,7 @@
 | OS | TrueNAS SCALE 25.04.2.6 |
 | Motherboard | Supermicro X13SAE-F, rev 1.02 |
 | CPU | 12th Gen Intel Core i7-12700K |
+| CPU cooler | Dual-tower air cooler, 6 heat pipes, 120mm PWM fan (LGA 1700) |
 | RAM | 63 GiB |
 | GPU | Intel UHD 770 integrated graphics (Quick Sync) handle Jellyfin transcoding — efficient for multiple simultaneous streams at low power draw. NVIDIA GTX 1060 6GB installed for local AI experiments (Open WebUI) |
 | LAN IP | 192.168.4.122 |

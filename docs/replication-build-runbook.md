@@ -42,14 +42,15 @@ Lesson: the snapshot naming schema on the replication task must match the period
 
 ## Phase 5 — Ongoing
 
-- [ ] Set up an alert (email/Discord) if a replication task fails
-- [ ] Cold HDD copies: decide a refresh cadence
+- [x] Alerting: email alerts configured on the primary (`.122`) via Gmail SMTP — Alert Service (E-Mail, Warning level) + system Email Options. Test mail received 2026-10-07. Covers replication failures plus drive/pool/scrub alerts. (Setup notes: Gmail OAuth is available as an alternative to app passwords; the admin user needs an email set under Credentials → Local Users; port/security must match — 587/TLS or 465/SSL, not Plain.)
+- [x] Cold HDD copies: **quarterly refresh** (decided 2026-10-07). 4× 1TB drives hold the full ~2.9TB set; first pass is a full copy, then rsync incrementals. Verify every refresh (checksums/file counts). Store disconnected, ideally off-site. Rationale: media barely churns, the replica covers hardware failure, and quarterly is a cadence that'll actually happen.
 
 ## Build log
 
 | Date | What happened |
 |---|---|
 | 2026-10-06 | Pool1/Media (~1.97T) and Pool2/Storage (~960G) seeds completed to the 9020 replica. Restore test passed: cloned snapshot, recovered Work/job.txt, sha256sums matched primary. Phase 4 complete. |
+| 2026-10-07 | First scheduled overnight run succeeded — task finished against the auto-2026-10-07 snapshots. Snapshot → replicate loop now proven end-to-end on the schedule. |
 
 ## Notes / things that broke
 
