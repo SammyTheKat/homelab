@@ -27,4 +27,4 @@ Friends wanted access to the Jellyfin library without installing VPN clients or 
 ## Notes
 
 - External port intentionally omitted from this repo — no reason to publish it
-- [ ] Consider noting OPNsense IDS/IPS or rate limiting on that rule
+- **Current posture on that forward:** Jellyfin's own authentication plus hand-created accounts (no self-service signup). No IDS/IPS or rate limiting on the rule today — that's on the roadmap. The OPNsense box has the headroom for Suricata when I get to it, and this doc will get updated when it lands.
