@@ -42,8 +42,8 @@ Downloads land on fast storage, the *arr apps process and rename, and the finish
 | Decision | Why |
 |---|---|
 | Split download vs. serve | The *arr apps manage files; Jellyfin only reads the finished library — a failed download never corrupts what's being watched |
-| FlareSolverr alongside Jackett | Indexers behind Cloudflare silently fail without a solver; this was (TODO: confirm) the fix for mysteriously empty search results |
-| SOCKS5-proxied download client | Download traffic segmented from the home network; transfers fail closed if the proxy drops |
+| FlareSolverr alongside Jackett | Some indexers sit behind CAPTCHAs that silently break searches; FlareSolverr solves them, which fixed the mysteriously empty search results |
+| SOCKS5-proxied download client | Download traffic segmented from the home network; configured to fail closed if the proxy drops |
 
 ## What broke / lessons learned
 
@@ -51,9 +51,9 @@ Downloads land on fast storage, the *arr apps process and rename, and the finish
 
 **250 GB of stale Docker images.** The apps NVMe pool started running low on space. Investigation showed over 250 GB of old, unused Docker images had accumulated from months of app updates. Ran an image prune from the TrueNAS shell — with the critical precaution of making sure every app was *running* first, so the prune couldn't delete the image behind a live container. Reclaimed the space with zero downtime. Lesson: container updates don't clean up after themselves; image hygiene is a recurring ops task, not a one-time fix.
 
-TODO: more stories as they happen — FlareSolverr/Cloudflare fights, Jackett indexer outages, container-vs-dataset permission battles.
+More stories will land here as they happen — FlareSolverr/Cloudflare fights, Jackett indexer outages, container-vs-dataset permission battles.
 
-## TODO
+## Still to document
 
 - [ ] Sanitized docker-compose / TrueNAS app configs → `configs/`
 - [ ] Dataset layout (where downloads land vs. where the library lives)

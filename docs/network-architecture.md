@@ -18,7 +18,7 @@ flowchart TB
     Switch --> TrueNAS["TrueNAS SCALE<br/>192.168.4.122"]
     Switch --> PS5["PS5<br/>(Cat6 attic run)"]
     Switch --> Archer["TP-Link Archer A6<br/>(bridge, 2.4 GHz)"]
-    Archer --> Wyze["Security camera receiver"]
+    Archer --> CamHub["Security camera receiver"]
     OPNsense --> WG["WireGuard"]
     WG --> Phone["Phone"]
     WG --> Laptop["Laptop"]
@@ -32,7 +32,7 @@ flowchart TB
 |---|---|
 | WireGuard on the router instead of a reverse proxy | Smaller attack surface; no public web dashboard to harden; native OPNsense support with per-peer config |
 | Static IP from ISP | Stable endpoint for WireGuard peers and the Jellyfin port forward; no DDNS moving parts |
-| qBittorrent via SOCKS5 proxy | Download traffic is proxied through the VPN provider; if the proxy is unreachable, transfers fail closed instead of leaking onto the home IP |
+| qBittorrent via SOCKS5 proxy | Download traffic is proxied through the VPN provider; the client is configured so transfers fail closed instead of leaking onto the home IP if the proxy is unreachable |
 | Single Jellyfin port forward | Pragmatic sharing for a handful of friends; one TCP port, not a whole dashboard |
 | eero + Archer A6 both in bridge mode | OPNsense stays the single router/DHCP server; APs are just radios, no double NAT |
 | Guest SSID for smart-home gear | Google Home and bulbs isolated from the main WLAN at the Wi-Fi layer |
@@ -60,9 +60,7 @@ Everything network-critical — OPNsense box, TrueNAS, switch, both Wi-Fi router
 
 ## What broke / lessons learned
 
-TODO: add stories as they happen. Candidates:
-- Jellyfin buffering for a remote friend (transcode settings? upload bandwidth cap?)
-- qBittorrent behavior when the VPN tunnel drops
+Nothing major on the network side yet — the war stories so far live in the [WireGuard doc](remote-access-wireguard.md). Candidates for future entries: Jellyfin buffering for a remote friend (transcode settings? upload bandwidth cap?), qBittorrent behavior when the VPN tunnel drops.
 
 ## Future improvements
 

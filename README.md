@@ -58,4 +58,4 @@ Sanitized, secrets-stripped service configs live in [`configs/`](configs/). Anyt
 
 ---
 
-*Hardware, network, and storage are documented. Remaining TODOs: spare-PC specs for the replication build, and more "what broke" war stories as they happen.*
+*Hardware, network, and storage are documented, including the October 2026 TrueNAS replication build. War stories get added as things break — that's the nature of a lab that's actually used.*

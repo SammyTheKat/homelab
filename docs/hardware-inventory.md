@@ -37,14 +37,14 @@ All datasets unencrypted. Fast NVMe pools hold app data and working sets; spinni
 | Item | Detail |
 |---|---|
 | Device | Dell OptiPlex 9020 mini tower |
-| Drives | Boot SSD (TODO) + 2× 2 TB HDD (planned stripe) |
-| OS | TrueNAS (planned) |
+| Drives | 256GB boot SSD + 2× 2TB HDD in a stripe (~3.5TiB usable) |
+| OS | TrueNAS SCALE (replication target, built Oct 2026) |
 
 ## Cold backup
 
 | Item | Detail |
 |---|---|
-| Media | External hard disks (TODO: count, sizes) |
+| Media | 4× 1TB + 7× 500GB HDDs on hand for cold copies |
 | Contents | Main media collection |
 | Cadence | Manual |
 
@@ -56,7 +56,7 @@ All datasets unencrypted. Fast NVMe pools hold app data and working sets; spinni
 | LAN subnet | 192.168.4.0/24 (TrueNAS is .122) |
 | VLANs | None — flat network |
 | Wi-Fi (main) | eero SO10001 in bridge mode (Wi-Fi 6E); separate guest SSID for Google Home / smart bulbs |
-| Wi-Fi (legacy) | TP-Link Archer A6 in bridge mode, 2.4 GHz for older IoT devices; Wyze camera wireless receiver hangs off it |
+| Wi-Fi (legacy) | TP-Link Archer A6 in bridge mode, 2.4 GHz for older IoT devices; security camera wireless receiver hangs off it |
 | Switch | Generic unmanaged switch |
 | Wired runs | Cat6 drop through the attic to the living room (PS5) |
 | VPN | WireGuard on OPNsense; peers: laptop, phone, handheld gaming systems |

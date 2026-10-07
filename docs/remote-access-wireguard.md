@@ -7,7 +7,7 @@ Needed secure remote access to the home LAN from a laptop, a phone, and several 
 ## Design
 
 - WireGuard server runs on the OPNsense router itself (Dell OptiPlex SFF).
-- Each device gets its own peer config (unique keys, TODO: note allowed-IPs scheme).
+- Each device gets its own peer config with unique keys. At the firewall, the WG interface passes the tunnel network (IPv4 TCP/UDP); the WireGuard group auto-generated rules are left disabled.
 - One UDP port forwarded/allowed on WAN; everything else stays closed.
 
 ## Why WireGuard over alternatives
@@ -23,12 +23,12 @@ Needed secure remote access to the home LAN from a laptop, a phone, and several 
 Two lessons from that day:
 
 1. **Rebuilding from scratch is a skill.** Doing the full router build a second time, from memory and in under two hours, proved I actually understood the configuration instead of having followed a guide once. That's worth more than the original build.
-2. **Change management on critical infrastructure.** I work from home 50% of the time — when the router is down, I'm down. Deleting a working config to troubleshoot was the wrong first move; rolling back the update would have restored service in minutes. Now the rule is: back up the OPNsense configuration before any update, and rollback is always step one. (TODO: confirm config backups are automated.)
+2. **Change management on critical infrastructure.** I work from home 50% of the time — when the router is down, I'm down. Deleting a working config to troubleshoot was the wrong first move; rolling back the update would have restored service in minutes. Now the rule is: back up the OPNsense configuration before any update, and rollback is always step one. Backups are manual — I took a fresh one right after the rebuild, and I take one before any change to the router.
 
-TODO: more stories as they happen — e.g. a peer that won't handshake, roaming quirks on the handhelds.
+More war stories will land here as they happen — a peer that won't handshake, roaming quirks on the handhelds, that sort of thing.
 
-## TODO
+## Still to document
 
-- [ ] Document peer provisioning steps (how a new device gets added)
-- [ ] Note OPNsense WireGuard plugin version and any custom firewall rules
+- [ ] Peer provisioning steps (how a new device gets added)
+- [ ] OPNsense WireGuard plugin version
 - [ ] Redacted example peer config (no private keys)

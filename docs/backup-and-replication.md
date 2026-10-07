@@ -15,15 +15,15 @@ The postmortem improvement: Scrutiny was installed for continuous drive-health m
 
 Lesson: the alert worked and the backup worked — but it was luck as much as planning. A scheduled, automated replica removes the luck.
 
-## The plan: second TrueNAS replication target
+## The build: second TrueNAS replication target
 
-A spare PC and extra drives are available. The build:
+Built October 2026 from a spare Dell OptiPlex 9020 mini tower:
 
-1. **Assemble the box** — install TrueNAS on the spare PC (TODO: specs, drive count/sizes).
-2. **Snapshot schedule on primary** — e.g. daily snapshots of media datasets, kept 2 weeks; weekly snapshots kept 2 months. (TODO: finalize retention.)
-3. **Replication task** — TrueNAS → TrueNAS replication over the LAN via SSH, pushing snapshots to the second box on a schedule.
-4. **Restore test** — actually restore a file from a snapshot on the replica. An untested backup is a rumor.
-5. **Keep one cold HDD copy** — the existing manual disks become the offline/off-site-ish third copy (3-2-1: 3 copies, 2 media types, 1 offline).
+1. **Assembled the box** — TrueNAS SCALE on the 9020: 256GB boot SSD, 2× 2TB HDDs in a stripe (~3.5TiB usable, no mirror — it's a replica, not primary storage).
+2. **Snapshot schedule on primary** — daily snapshots, kept 2 weeks: `Pool1/Media` at midnight, `Pool2/Storage` at 1am (naming `auto-%Y-%m-%d_%H-%M`).
+3. **Replication task** — TrueNAS → TrueNAS over the LAN via SSH+NETCAT, pushing both datasets to the `replica` pool on a schedule after the snapshots land.
+4. **Restore test** — cloned a snapshot on the replica, recovered a file, `sha256sum` matched the primary exactly. An untested backup is a rumor; this one isn't.
+5. **Cold HDD copy** — 4× 1TB + 7× 500GB drives on hand for the offline third copy (3-2-1: 3 copies, 2 media types, 1 offline). Refresh cadence TBD.
 
 ```mermaid
 flowchart LR
@@ -32,23 +32,19 @@ flowchart LR
     Scrutiny["Scrutiny<br/>(drive health)"] -.-> Primary
 ```
 
-## Design decisions (to finalize during the build)
+## Design decisions
 
 | Decision | Rationale |
 |---|---|
 | TrueNAS replication vs. rsync | Block-level, incremental, preserves snapshots — and it's a marketable skill |
 | Replica on LAN vs. off-site | LAN is what's available; honest about the trade-off (fire/flood risk remains) — cold HDDs mitigate |
-| Snapshot retention policy | Balance drive space against how far back you might need to go |
+| Snapshot retention: 2 weeks daily | Balance drive space against how far back you'd realistically need to go; media barely churns so snapshots stay cheap |
 
 ## Build log
 
-TODO: date-stamped entries as the build happens —
-what hardware went in, the exact replication task config, first successful run, first restore test, and anything that broke.
+- **2026-10-06**: assembled the 9020, created the `replica` pool, ran the seed (~2.9TB: 1.97T Media + ~960G Storage). Two setup gotchas worth remembering: Rufus ISO-mode boot failed (reflashed in DD mode), and the static IP needed an explicit netmask/gateway. Restore test passed same day — cloned snapshot, recovered `Work/job.txt`, checksums matched the primary. Details in the [replication runbook](replication-build-runbook.md).
 
-## TODO
+## Still to do
 
-- [ ] Spare PC specs + drive inventory
-- [ ] Snapshot schedule + retention policy
-- [ ] Replication task configuration (screenshots or exported config, redacted)
-- [ ] First restore test: date + result
 - [ ] Decide cold-HDD refresh cadence
+- [ ] Set up failure alerts (email/Discord) for the replication task
