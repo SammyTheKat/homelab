@@ -1,10 +1,5 @@
 # Active Directory test lab
 
-> Draft skeleton — build day is **Friday Oct 9, 2026** (WFH). Pete builds,
-> Sammy documents. Sections marked "during the build" get written as we go,
-> following the repo's shape: **problem → design decisions → what broke →
-> how I fixed it.**
-
 ## Problem
 
 The DFW sysadmin market scan flagged hands-on Active Directory as the
@@ -58,8 +53,7 @@ stays retired.
 
 ## Build log
 
-Friday Oct 9, 2026 — bare metal to working domain in about four hours,
-built between work tasks on a WFH day.
+Friday, October 9, 2026 — bare metal to working domain in about four hours.
 
 - **Proxmox VE 9.2 install** (graphical installer, monitor + keyboard
   attached): hostname `pve-adlab.home.arpa`, management IP
