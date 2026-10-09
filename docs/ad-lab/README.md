@@ -107,14 +107,18 @@ Friday, October 9, 2026 — bare metal to working domain in about four hours.
   the 7000 to the vertical 3D-printed stand next to the OPNsense box,
   disconnected monitor/keyboard, booted headless. Managed entirely via
   `192.168.4.50:8006` from the Aquarium from that point on.
+- **OU design and test users:** created `Sales`, `IT`, and
+  `Disabled Users` OUs under `ad.lab`; test users `sarah` and `mike`
+  in Sales, `alex` in IT. Created in ADUC, verified with
+  `Get-ADUser -Filter *` — the same cmdlet family the scripting drills
+  use.
 
 ## What broke
 
 - **DC01 wouldn't shut down from Proxmox** — "vm quit/powerdown failed,
-  got timeout." The guest agent wasn't responding to the ACPI shutdown.
-  Fixed by shutting down from inside Windows (Start → Power) instead.
-  Lesson: the Proxmox Shutdown button depends on a healthy guest agent;
-  when it times out, go in through the console.
+  got timeout." Shut down cleanly from inside Windows (Start → Power)
+  instead. Lesson: when the Proxmox Shutdown button times out, go in
+  through the console — don't fight the hypervisor.
 - **noVNC clipboard button did nothing** — the slide-out toolbar's
   clipboard icon never opened its text box. Worked around by typing short
   paths by hand; RDP (once the domain is up) gives full clipboard for
