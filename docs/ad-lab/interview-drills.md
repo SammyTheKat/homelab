@@ -26,8 +26,8 @@ lock the account directly with the policy below set low).
 1. Confirm it's a lockout, not a bad password: in ADUC, find the user →
    Account tab shows "Unlock account". Or in PowerShell:
    `Get-ADUser sarah -Properties LockedOut, lockoutTime | Select SamAccountName, LockedOut, lockoutTime`
-2. Find every locked account in the domain at once (the move you brag
-   about in interviews): `Search-ADAccount -LockedOut | Select Name, SamAccountName`
+2. Find every locked account in the domain at once (the fastest way to
+   survey the whole domain): `Search-ADAccount -LockedOut | Select Name, SamAccountName`
 3. Unlock it: `Unlock-ADAccount -Identity sarah` — then verify
    `LockedOut` is `$false`.
 4. Check the policy that fired: Default Domain Policy → Computer
@@ -38,9 +38,10 @@ lock the account directly with the policy below set low).
 
 **Break it on purpose:** set the threshold to 3, lock the test user,
 watch the Security event log on the DC (event 4740) record the lockout
-with the caller computer name. That event ID is interview gold.
+with the caller computer name. That event ID is the difference between
+guessing and knowing.
 
-**Say in the interview:** "I don't just unlock — I check 4740 to see
+**Takeaway:** "I don't just unlock — I check 4740 to see
 where the bad attempts came from, because a lockout that keeps
 recurring is usually a stale credential on a phone or a mapped drive,
 not a user problem."
@@ -77,7 +78,7 @@ filtering, add only the test user group, watch `gpresult /r` move the
 GPO to Denied. Put it back. You now have a story for "the most common
 GPO mistake I've actually reproduced."
 
-**Say in the interview:** "gpresult first, always — it tells you whether
+**Takeaway:** "gpresult first, always — it tells you whether
 the GPO was denied, filtered, or never in scope, and each answer is a
 different fix."
 
@@ -108,7 +109,7 @@ temp password, must change it at first logon."
    ForEach-Object { New-ADUser ... }`. Compare the time against the
    manual run — that's the story.
 
-**Say in the interview:** "I provision manually to understand every
+**Takeaway:** "I provision manually to understand every
 field, then script it, because the fifth new hire of the week deserves
 the same setup as the first."
 
@@ -134,7 +135,7 @@ the same setup as the first."
 the client. Watch it fail. Try accessing a share with the stripped
 groups. The failure modes are the lesson.
 
-**Say in the interview:** "Disable first, strip groups, park in a
+**Takeaway:** "Disable first, strip groups, park in a
 disabled OU, stamp the description with the date. Deletion is a
 retention-policy decision, not a Friday-afternoon click."
 
@@ -164,7 +165,7 @@ nothing happen for the user — user preferences need user scope. Then
 move it and watch it work. Preferences-vs-policies is a distinction
 most candidates fumble; you'll have the demo.
 
-**Say in the interview:** "User Configuration, drive-map preference,
+**Takeaway:** "User Configuration, drive-map preference,
 item-level targeting on the security group. Follows the user, not the
 machine — and Update, not Replace, so it doesn't flap on every
 refresh."
@@ -190,7 +191,7 @@ for 90 days, and all disabled accounts still sitting in enabled OUs."
 4. Group membership audit: `Get-ADGroupMember "Domain Admins" |
    Select Name, objectClass` — know who's in the privileged groups.
 
-**Say in the interview:** "Anything I do twice in ADUC, I script the
+**Takeaway:** "Anything I do twice in ADUC, I script the
 third time. The audit queries are reports first — Export-Csv — because
 nobody wants a screenshot of a console."
 
@@ -200,7 +201,7 @@ nobody wants a screenshot of a console."
 
 - **Friday:** build the lab, join both clients, create the OUs and a
   handful of test users (drill 3's manual pass doubles as setup).
-- **Saturday:** drills 1 and 2 — the two most-asked interview
+- **Saturday:** drills 1 and 2 — the two most common real-world
   scenarios, while the build is fresh.
 - **Sunday:** drills 3 through 6 — the provisioning lifecycle and the
   scripting pass. End the weekend with the CSV-provisioned users and

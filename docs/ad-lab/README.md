@@ -6,8 +6,10 @@ The DFW sysadmin market scan flagged hands-on Active Directory as the
 experience gap: AD concepts are familiar (GPOs, password resets), but there
 is no lived experience running a domain. The goal is a working AD
 environment at home — domain controller, real GPOs, user provisioning —
-plus a portfolio write-up that proves it. The lab then doubles as an
-interview-prep range for the exact scenarios recruiters ask about.
+plus a portfolio write-up that proves it. The lab then doubles as a
+practice range for the scenarios that come up in day-to-day admin work:
+account lockouts, GPO troubleshooting, user provisioning and
+deprovisioning.
 
 ## Design decisions
 
@@ -120,7 +122,7 @@ Friday, October 9, 2026 — bare metal to working domain in about four hours.
 
 ## Drills
 
-After the build, the lab becomes the interview-prep range — see
+After the build, the lab becomes the practice range — see
 [interview-drills.md](interview-drills.md): locked-out user, GPO not
 applying, new-hire provisioning, deprovisioning, drive mappings, PowerShell
 AD queries.
