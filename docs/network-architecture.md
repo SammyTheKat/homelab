@@ -20,6 +20,8 @@ flowchart TB
     Switch --> PS5["PS5<br/>(Cat6 attic run)"]
     Switch --> Archer["TP-Link Archer A6<br/>(bridge, 2.4 GHz)"]
     Archer --> CamHub["Security camera receiver"]
+    Switch --> Proxmox["Proxmox VE (AD lab)<br/>OptiPlex 7000 SFF<br/>192.168.4.50"]
+    Proxmox --> LabNet["Lab subnet 10.20.30.0/24<br/>(vmbr1, port-less bridge, NAT)<br/>DC 10.20.30.10 · Client 10.20.30.11"]
     OPNsense --> WG["WireGuard"]
     WG --> Phone["Phone"]
     WG --> Laptop["Laptop"]
@@ -40,6 +42,25 @@ flowchart TB
 | Guest SSID for smart-home gear | Google Home and bulbs isolated from the main WLAN at the Wi-Fi layer |
 | Flat network, no VLANs (yet) | Simplicity won; segmentation is a known future improvement |
 | OPNsense admin never on WAN | Admin UI is reachable only from the LAN or over WireGuard |
+| Port-less bridge + NAT for the lab subnet | Lab DHCP/DNS can never leak onto the production LAN — the isolation is structural (no wire to carry it), not a firewall rule to get wrong |
+
+## AD lab subnet
+
+The Proxmox host (`pve-adlab`, Dell OptiPlex 7000 SFF, `192.168.4.50`)
+sits on the LAN like any other device, but the lab itself lives on an
+isolated virtual subnet:
+
+- `vmbr1` is a Linux bridge with **no physical interface attached** — a
+  virtual switch that exists only inside the Proxmox host.
+- The lab subnet is `10.20.30.0/24`; the host is `.1` and NATs lab
+  traffic outbound with an iptables MASQUERADE rule, so VMs get
+  internet for updates without being reachable inbound.
+- The domain controller (`DC01`, `10.20.30.10`) and the Windows 11
+  client (`CLIENT01`, `10.20.30.11`) each have a single NIC on `vmbr1`.
+  Their DHCP broadcasts, DNS, and AD traffic physically cannot reach
+  the production LAN.
+
+Full write-up: [Active Directory test lab](ad-lab/).
 
 ## The M.2 NIC mod
 
