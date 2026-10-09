@@ -88,6 +88,14 @@ GPO mistake I've actually reproduced."
 the GPO was denied, filtered, or never in scope, and each answer is a
 different fix."
 
+*Ran 2026-10-09: created a `Sales Wallpaper` GPO (Desktop Wallpaper →
+`img0.jpg`), linked to the Sales OU — applied cleanly, wallpaper
+picker greyed out for sarah. Broke it by removing Authenticated Users
+from security filtering and adding only sarah: `gpresult /r` showed
+"Not Applied (Unknown Reason)" under filtered-out GPOs. Fixed by
+granting Domain Computers Read (not Apply) on the Delegation tab —
+back under Applied after `gpupdate /force` and a fresh logon.*
+
 ---
 
 ## 3. New-hire provisioning
@@ -206,10 +214,10 @@ nobody wants a screenshot of a console."
 ## Weekend order of operations
 
 - **Friday:** build the lab, join both clients, create the OUs and a
-  handful of test users — plus drill 1 (locked-out user), since the
-  afternoon had bandwidth.
-- **Saturday:** drill 2 — the GPO troubleshooting scenario, while the
-  build is fresh.
+  handful of test users — plus drills 1 (locked-out user) and 2 (GPO
+  not applying), since the afternoon had bandwidth.
+- **Saturday:** drill 5 (drive mappings) — it shares drill 2's GPO
+  tooling, so it goes faster with Friday fresh.
 - **Sunday:** drills 3 through 6 — the provisioning lifecycle and the
   scripting pass. End the weekend with the CSV-provisioned users and
   the stale-account report saved as artifacts for the portfolio
