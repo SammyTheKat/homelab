@@ -52,6 +52,7 @@ Each one follows the same shape: **problem → design decisions → what broke �
 - [Media automation pipeline (*arr stack)](docs/media-automation-pipeline.md)
 - [Sharing Jellyfin with friends over a static IP](docs/jellyfin-external-sharing.md)
 - [Backup & replication strategy](docs/backup-and-replication.md) — includes the second TrueNAS build
+- [Active Directory test lab](docs/ad-lab/) — isolated Proxmox subnet, Server 2022 domain controller, domain-joined Windows 11 client, and the interview-drill range
 - [Hardware inventory](docs/hardware-inventory.md)
 
 ## Configs
