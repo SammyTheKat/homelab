@@ -46,6 +46,12 @@ where the bad attempts came from, because a lockout that keeps
 recurring is usually a stale credential on a phone or a mapped drive,
 not a user problem."
 
+*Ran 2026-10-09: set the threshold to 3, locked `sarah` with three bad
+logins from CLIENT01, confirmed `LockedOut=True` via `Get-ADUser`,
+swept the domain with `Search-ADAccount -LockedOut` (only sarah),
+event 4740 named CLIENT01 as the caller, unlocked with
+`Unlock-ADAccount` and verified `LockedOut=False`.*
+
 ---
 
 ## 2. GPO not applying
@@ -200,9 +206,10 @@ nobody wants a screenshot of a console."
 ## Weekend order of operations
 
 - **Friday:** build the lab, join both clients, create the OUs and a
-  handful of test users (drill 3's manual pass doubles as setup).
-- **Saturday:** drills 1 and 2 — the two most common real-world
-  scenarios, while the build is fresh.
+  handful of test users — plus drill 1 (locked-out user), since the
+  afternoon had bandwidth.
+- **Saturday:** drill 2 — the GPO troubleshooting scenario, while the
+  build is fresh.
 - **Sunday:** drills 3 through 6 — the provisioning lifecycle and the
   scripting pass. End the weekend with the CSV-provisioned users and
   the stale-account report saved as artifacts for the portfolio
