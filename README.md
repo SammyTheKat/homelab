@@ -15,10 +15,18 @@ flowchart TB
     subgraph LAN["Home LAN"]
         OPNsense <--> TrueNAS["TrueNAS Server<br/>~20 containerized services"]
         TrueNAS <--> Replica["TrueNAS Replica<br/>192.168.4.123<br/>(snapshot target)"]
+        OPNsense <--> Proxmox["Proxmox VE<br/>OptiPlex 7000 SFF<br/>192.168.4.50"]
         OPNsense <--> WG["WireGuard VPN<br/>(on OPNsense)"]
         OPNsense <--> JF["Jellyfin<br/>(port-forwarded)"]
         TrueNAS <--> qbit["qBittorrent<br/>→ VPN tunnel"]
     end
+
+    subgraph LAB["AD lab 10.20.30.0/24<br/>(isolated bridge, NAT out)"]
+        DC["DC01<br/>Server 2022 DC<br/>10.20.30.10"]
+        Client["CLIENT01<br/>Windows 11<br/>10.20.30.11"]
+    end
+    Proxmox <--> DC
+    Proxmox <--> Client
 
     WG <--> Phone["Phone (tunnel)"]
     WG <--> Laptop["Laptop (tunnel)"]
