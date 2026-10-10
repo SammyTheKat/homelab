@@ -113,6 +113,17 @@ Friday, October 9, 2026 — bare metal to working domain in about four hours.
   `Get-ADUser -Filter *` — the same cmdlet family the scripting drills
   use.
 
+Saturday, October 10, 2026 — drills 1–6 completed (each result logged
+in [interview-drills.md](interview-drills.md)).
+
+- **RDP management path:** the noVNC clipboard never worked, so Remote
+  Desktop was enabled on DC01 and a persistent route added on the
+  workstation (`route add 10.20.30.0 mask 255.255.255.0 192.168.4.50 -p`,
+  run elevated). `mstsc` to `10.20.30.10` now gives a native clipboard
+  for PowerShell work. The route is scoped to the lab subnet on one
+  machine — LAN and internet traffic are untouched. Standard pattern:
+  one admin workstation with a route to the lab subnet.
+
 ## What broke
 
 - **DC01 wouldn't shut down from Proxmox** — "vm quit/powerdown failed,
@@ -121,8 +132,9 @@ Friday, October 9, 2026 — bare metal to working domain in about four hours.
   through the console — don't fight the hypervisor.
 - **noVNC clipboard button did nothing** — the slide-out toolbar's
   clipboard icon never opened its text box. Worked around by typing short
-  paths by hand; RDP (once the domain is up) gives full clipboard for
-  longer PowerShell sessions later.
+  paths by hand until RDP was set up (see the Oct 10 build log entry):
+  Remote Desktop on DC01 plus a persistent static route on the
+  workstation gives full clipboard via mstsc.
 
 ## Drills
 
