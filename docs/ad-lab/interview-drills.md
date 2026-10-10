@@ -107,7 +107,7 @@ temp password, must change it at first logon."
 1. Manual in ADUC: create the user in the right OU, set a temp password,
    check "User must change password at next logon", add to the
    department group, set the home folder path
-   (`\\dc\home$\%username%`).
+   (`\\dc01\home$\%username%`).
 2. Then do the whole thing in one PowerShell pass:
    ```powershell
    $pw = ConvertTo-SecureString "TempPass123!" -AsPlainText -Force
@@ -116,7 +116,7 @@ temp password, must change it at first logon."
      -Path "OU=Sales,DC=ad,DC=lab" `
      -AccountPassword $pw -Enabled $true `
      -ChangePasswordAtLogon $true `
-     -HomeDirectory "\\dc\home$\thire" -HomeDrive "H:"
+     -HomeDirectory "\\dc01\home$\thire" -HomeDrive "H:"
    Add-ADGroupMember -Identity "Sales" -Members "thire"
    ```
 3. Scale it: put five hires in a CSV and loop `Import-Csv |
@@ -166,7 +166,7 @@ the user to any machine."
    preference): User Configuration → Preferences → Windows Settings →
    Drive Maps → New Mapped Drive.
 3. Action: **Update** (not Replace — Replace disconnects and remaps every
-   refresh, which users notice). Location: `\\dc\sales`. Label it.
+   refresh, which users notice). Location: `\\dc01\sales`. Label it.
 4. Item-level targeting: Targeting → New Item → Security Group → the
    Sales group. This is the whole trick — the mapping applies by group
    membership, not by machine.
@@ -183,6 +183,13 @@ most candidates fumble; you'll have the demo.
 item-level targeting on the security group. Follows the user, not the
 machine — and Update, not Replace, so it doesn't flap on every
 refresh."
+
+*Ran 2026-10-10: created a `Sales` security group (sarah, mike);
+shared `C:\Shares\Sales` as `\\dc01\sales` with Sales-group share and
+NTFS read; new `Sales Drive Mapping` GPO linked to the Sales OU with a
+Drive Maps preference (Update, S:, item-level targeting on the Sales
+group). sarah got `Sales (S:)` after gpupdate + fresh logon; alex (IT,
+not in the group) got nothing — targeting proven both directions.*
 
 ---
 
@@ -216,9 +223,9 @@ nobody wants a screenshot of a console."
 - **Friday:** build the lab, join both clients, create the OUs and a
   handful of test users — plus drills 1 (locked-out user) and 2 (GPO
   not applying), since the afternoon had bandwidth.
-- **Saturday:** drill 5 (drive mappings) — it shares drill 2's GPO
-  tooling, so it goes faster with Friday fresh.
-- **Sunday:** drills 3 through 6 — the provisioning lifecycle and the
-  scripting pass. End the weekend with the CSV-provisioned users and
-  the stale-account report saved as artifacts for the portfolio
-  write-up.
+- **Saturday:** drill 5 (drive mappings) — ran 2026-10-10, reuses
+  drill 2's GPO tooling.
+- **Sunday:** drills 3 (new-hire provisioning, manual then scripted),
+  4 (deprovisioning), and 6 (PowerShell audit queries). End the weekend
+  with the CSV-provisioned users and the stale-account report saved as
+  artifacts for the portfolio write-up.
