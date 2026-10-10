@@ -234,15 +234,21 @@ for 90 days, and all disabled accounts still sitting in enabled OUs."
 third time. The audit queries are reports first — Export-Csv — because
 nobody wants a screenshot of a console."
 
+*Ran 2026-10-10: stale-account query with null handling (`-not
+$_.LastLogonDate -or $_.LastLogonDate -lt $cutoff`) — the realistic
+finding was never-logged-in accounts (fresh hires, Guest, krbtgt,
+mike); sarah and alex were correctly absent. Exported to
+`C:\stale-accounts.csv`. Disabled-account sweep: only mike, properly
+parked in the Disabled Users OU — no findings. `Domain Admins`
+contains only Administrator.*
+
 ---
 
 ## Weekend order of operations
 
-- **Friday:** build the lab, join both clients, create the OUs and a
-  handful of test users — plus drills 1 (locked-out user) and 2 (GPO
-  not applying), since the afternoon had bandwidth.
-- **Saturday:** drills 3 (provisioning), 4 (deprovisioning), and 5
-  (drive mappings) — all ran 2026-10-10.
-- **Sunday:** drill 6 (PowerShell audit queries) — the last one. End
-  the weekend with the stale-account report saved as an artifact for
-  the portfolio write-up.
+All six drills ran 2026-10-09 → 2026-10-10, each logged with its
+result above. The lab now has: OUs (Sales, IT, Disabled Users), nine
+users in Sales, a wallpaper GPO and a drive-mapping GPO with
+item-level targeting, a lockout policy, and two file shares. The
+`C:\hires.csv` and `C:\stale-accounts.csv` on DC01 are the drill
+artifacts.
