@@ -127,6 +127,17 @@ temp password, must change it at first logon."
 field, then script it, because the fifth new hire of the week deserves
 the same setup as the first."
 
+*Ran 2026-10-10: manual ADUC pass for `jlee` (Sales OU, TempPass123!,
+must-change-at-next-logon, Sales group, H: → `\\dc01\home$\jlee`) —
+hit the classic "you do not have create access on the server" error on
+the home folder, because the share granted only the Sales group and I
+was operating as Administrator; fixed by adding Domain Admins Full
+Control to the share. Scripted pass for `thire` via `New-ADUser`
+(noted: unlike ADUC, it sets the home path without creating the
+folder — bulk folder creation is a separate step). Bulk: five hires
+from `C:\hires.csv` via an `Import-Csv | ForEach-Object` loop — nine
+users in the Sales OU when done.*
+
 ---
 
 ## 4. Deprovisioning
@@ -152,6 +163,13 @@ groups. The failure modes are the lesson.
 **Takeaway:** "Disable first, strip groups, park in a
 disabled OU, stamp the description with the date. Deletion is a
 retention-policy decision, not a Friday-afternoon click."
+
+*Ran 2026-10-10: `Disable-ADAccount mike` (verified Enabled=False),
+stripped every group except Domain Users, `Move-ADObject` to the
+Disabled Users OU, stamped the description "Disabled 2026-10-10 —
+departed, data retained per policy". Login from CLIENT01 with the
+correct password failed: "Account has been disabled, Please see your
+system administrator."*
 
 ---
 
@@ -223,9 +241,8 @@ nobody wants a screenshot of a console."
 - **Friday:** build the lab, join both clients, create the OUs and a
   handful of test users — plus drills 1 (locked-out user) and 2 (GPO
   not applying), since the afternoon had bandwidth.
-- **Saturday:** drill 5 (drive mappings) — ran 2026-10-10, reuses
-  drill 2's GPO tooling.
-- **Sunday:** drills 3 (new-hire provisioning, manual then scripted),
-  4 (deprovisioning), and 6 (PowerShell audit queries). End the weekend
-  with the CSV-provisioned users and the stale-account report saved as
-  artifacts for the portfolio write-up.
+- **Saturday:** drills 3 (provisioning), 4 (deprovisioning), and 5
+  (drive mappings) — all ran 2026-10-10.
+- **Sunday:** drill 6 (PowerShell audit queries) — the last one. End
+  the weekend with the stale-account report saved as an artifact for
+  the portfolio write-up.
